@@ -138,8 +138,8 @@ function botResponse(text){
                 </button>`, "bot"
             );
             return;
-        case message.includes("depilacion") || message.includes("laser"):
-            if (message.includes("despigmentacion laser")) {
+        case message.includes("depilacion") || message.includes("laser") || message.includes("despigmentacion"):
+            if (message.includes("despigmentacion laser") || message.includes("despigmentacion")) {
                 mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, DESPIGMENTACION LASER, 
                 ¿Que dia tienes disponible?`;
                 addMessage(
@@ -148,8 +148,8 @@ function botResponse(text){
                 <br><br>
                 <div style="margin: 8px 0; pandding-left: 0">PRECIO SEGÚN TAMAÑO DE MANCHA</div>
                 <br><br>
-                <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
-                    📅 Agendar una cita
+                <button id="btnOperador" class="servOpn" onclick="selectOption('operador')">
+                    💬 Hablar con un asesor
                 </button>
                 <button id="opnCorp" class="servOpn" onclick="opnServ('cuidaCorpo')">
                     <span class="option-icon">🧴</span>
@@ -318,7 +318,7 @@ function botResponse(text){
                     `Masaje reductor con técnica colombiana manual que ayuda a moldear y reducir tallas, terapia 
                     de tejido profundo.
                     <br><br>
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 60 min por tan solo $600 MXN</div>
+                    <div style="margin: 8px 0; pandding-left: 0">Duración de 45 min por tan solo $600 MXN</div>
                     <br><br>    
                     <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
                         📅 Agendar una cita
@@ -338,7 +338,7 @@ function botResponse(text){
                     `Masaje reductor con técnica colombiana manual que ayuda a moldear y reducir tallas, terapia 
                     de tejido profundo.
                     <br><br>
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 60 min por tan solo $600 MXN</div>
+                    <div style="margin: 8px 0; pandding-left: 0">Duración de 45 min por tan solo $600 MXN</div>
                     <br><br>    
                     <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
                         📅 Agendar una cita
