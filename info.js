@@ -584,7 +584,6 @@ function botResponse(text){
             <span class="option-text">Masajes</span>
             </button>`, "bot"
         );
-        return;
     };
     if (message.includes("masaje") == true){
         console.log("mensaje contiene la palabra masaje");
