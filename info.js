@@ -54,7 +54,8 @@ function opnServ(catalogo){
                         <li>💆‍♀️ Masaje mixto corto </li>
                         <li>💆‍♀️ Masaje mixto cuerpo completo</li>
                         <li>💪 Masaje descontracturante corto</li>
-                        <li>🫧 Masaje con ventosas</li>
+                        <li>🫧 Masaje con ventosas corto</li>
+                        <li>🫧 Masaje con ventosas completo</li>
                         <li>🍫 Chocolaterapia</li>
                         <li>🎋 Bambuterapia</li>
                         <li>🦶 Reflexología podal</li>
@@ -673,31 +674,70 @@ function botResponse(text){
                 );
                 break;
             case message.includes("masaje con ventosas"):
-                mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, MASAJE CON VENTOSAS, 
+                if (message.includes("corto") == true) {
+                    mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, MASAJE CON VENTOSAS CORTO, 
                     ¿Que dia tienes disponible?`;
-                addMessage(
-                    `Es un masaje mixto en donde se utiliza ventosas para generar un efecto de succión sobre la piel y 
-                    tejidos, ayudando a liberar tensión y favorecer la circulación local.
-                    <br><br>
-                    Incluye:
-                    <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
-                        <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
-                    </ul>   
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 60 min por tan solo $650 MXN</div>
-                    <br><br>
-                    <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
-                        📅 Agendar una cita
-                    </button>
-                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                        <span class="option-icon">🧖🏻‍♀️</span>
-                        <span class="option-text">Masajes</span>
-                    </button>
-                    <button class="servOpn" onclick="menuPrincipal()">
-                        🏠 Menú principal
-                    </button>
-                    `, "bot"
-                );
-                break;
+                    addMessage(
+                        `Es un masaje mixto en donde se utiliza ventosas para generar un efecto de succión sobre la piel y 
+                        tejidos, ayudando a liberar tensión y favorecer la circulación local.
+                        <br><br>
+                        Incluye:
+                        <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
+                            <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
+                        </ul>   
+                        <div style="margin: 8px 0; pandding-left: 0">Duración de 60 min por tan solo $650 MXN</div>
+                        <br><br>
+                        <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
+                            📅 Agendar una cita
+                        </button>
+                        <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+                            <span class="option-icon">🧖🏻‍♀️</span>
+                            <span class="option-text">Masajes</span>
+                        </button>
+                        <button class="servOpn" onclick="menuPrincipal()">
+                            🏠 Menú principal
+                        </button>
+                        `, "bot"
+                    );
+                }else if (message.includes("completo") == true) {                
+                    mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, MASAJE CON VENTOSAS COMPLETO, 
+                        ¿Que dia tienes disponible?`;
+                    addMessage(
+                        `Es un masaje mixto en donde se utiliza ventosas para generar un efecto de succión sobre la piel y 
+                        tejidos, ayudando a liberar tensión y favorecer la circulación local.
+                        <br><br>
+                        Incluye:
+                        <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
+                            <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
+                            <li>Boca Arriba: Rostro, cuello, hombros, pectoral, abdomen, piernas, pantorrilla delantera y pies.</li>
+                        </ul>   
+                        <div style="margin: 8px 0; pandding-left: 0">Duración de 80 min por tan solo $950 MXN</div>
+                        <br><br>
+                        <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
+                            📅 Agendar una cita
+                        </button>
+                        <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+                            <span class="option-icon">🧖🏻‍♀️</span>
+                            <span class="option-text">Masajes</span>
+                        </button>
+                        <button class="servOpn" onclick="menuPrincipal()">
+                            🏠 Menú principal
+                        </button>
+                        `, "bot"
+                    );
+                }else {
+                    addMessage(`Indícame de cuál quieres información:
+                        <div style="font-style: italic; font-weight: bold;">
+                            Ejem:
+                        </div>
+                        <ul style="list-style: none; padding-left: 0">
+                            <li>☑️ Masaje Ventosas Corto</li>
+                            <li>☑️ Masaje Ventosas Completo</li>
+                        </ul>`,
+                        "bot"
+                    );
+                };
+                return;
             case message.includes("chocolaterapia"):
                 mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, CHOCOLATERAPIA, 
                     ¿Que dia tienes disponible?`;
