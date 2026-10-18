@@ -569,7 +569,7 @@ function botResponse(text){
                 `, "bot"
             );
             return;
-        default:
+        /*default:
             addMessage(
             `¿Me ayudas a especificar mejor el servicio que necesitas?, por favor.
             <br><br>
@@ -583,12 +583,12 @@ function botResponse(text){
             <span class="option-icon">🧖🏻‍♀️</span>
             <span class="option-text">Masajes</span>
             </button>`, "bot"
-        );
+        );*/
     };
     if (message.includes("masaje") == true){
         console.log("mensaje contiene la palabra masaje");
         switch(true){
-            case message.includes("relajante"):
+            case message.includes("relajante") || message.includes("pareja"):
                 if (message.includes("masaje relajante corto")) {
                     mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, MASAJE RELAJANTE CORTO, 
                     ¿Que dia tienes disponible?`;
@@ -614,7 +614,7 @@ function botResponse(text){
                         </button>
                         `, "bot"
                     );
-                } else if (message.includes("masaje relajante cuerpo completo")) {
+                } else if (message.includes("masaje relajante cuerpo completo") || message.includes("masaje relajante completo") ) {
                     mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, MASAJE RELAJANTE CUERPO COMPLETO, 
                     ¿Que dia tienes disponible?`;
                     addMessage(
@@ -919,9 +919,9 @@ function botResponse(text){
                     <br><br>
                     Selecciona una opcion de nuestro Menu de inicio
                     <br><br>
-                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                    <span class="option-icon">🧖🏻‍♀️</span>
-                    <span class="option-text">Masajes</span>
+                    <button id="opnFaci" class="servOpn" onclick="opnServ('facial')">
+                        <span class="option-icon">💆🏻‍♀️</span>
+                        <span class="option-text">Cuidado Facial</span>
                     </button>`, "bot"
                 );
                 break;
