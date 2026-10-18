@@ -462,6 +462,130 @@ function botResponse(text){
             );
             return;
     };
+    switch(true){
+        case message.includes("chocolaterapia"):
+                mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, CHOCOLATERAPIA, 
+                    ¿Que dia tienes disponible?`;
+                addMessage(
+                    `Experiencia corporal única que combina la técnica de masaje de 3 tiempos, (exfoliación, masaje chocolate, 
+                    masaje de sellado con crema) productos a base de chocolate orgánico dejando la piel suave y relajación total.
+                    <br><br>
+                    Incluye:
+                    <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
+                        <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
+                        <li>Boca Arriba: Rostro, cuello, hombros, pectoral, abdomen, piernas, pantorrilla delantera y pies.</li>
+                    </ul>   
+                    <div style="margin: 8px 0; pandding-left: 0">Duración de 80 min por tan solo $1500 MXN</div>
+                    <br><br>
+                    <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
+                        📅 Agendar una cita
+                    </button>
+                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+                        <span class="option-icon">🧖🏻‍♀️</span>
+                        <span class="option-text">Masajes</span>
+                    </button>
+                    <button class="servOpn" onclick="menuPrincipal()">
+                        🏠 Menú principal
+                    </button>
+                    `, "bot"
+                );
+                return;
+        case message.includes("bambuterapia"):
+            mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, BAMBUTERAPIA, 
+                ¿Que dia tienes disponible?`;
+            addMessage(
+                `Masaje relajante realizado con cañas de bambú que ayuda a trabajar la tensión muscular y proporcionar 
+                relajación corporal completa.
+                <br><br>
+                Incluye:
+                <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
+                    <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
+                    <li>Boca Arriba: Rostro, cuello, hombros, pectoral, abdomen, piernas, pantorrilla delantera y pies.</li>
+                </ul>   
+                <div style="margin: 8px 0; pandding-left: 0">Duración de 80 min por tan solo $850 MXN</div>
+                <br><br>
+                <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
+                    📅 Agendar una cita
+                </button>
+                <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+                    <span class="option-icon">🧖🏻‍♀️</span>
+                    <span class="option-text">Masajes</span>
+                </button>
+                <button class="servOpn" onclick="menuPrincipal()">
+                    🏠 Menú principal
+                </button>
+                `, "bot"
+            );
+            return;
+        case message.includes("reflexologia"):
+            mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, REFLEXOLOGIA PODAL, 
+                ¿Que dia tienes disponible?`;
+            addMessage(
+                `Técnica de masaje enfocada en los pies para favorecer la relajación y aliviar la sensación de 
+                cansancio, al mismo tiempo aliviando molestias en órganos espejo conectado por el sistema nervioso.
+                <br><br>
+                Incluye:
+                <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
+                    <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
+                </ul>   
+                <div style="margin: 8px 0; pandding-left: 0">Duración de 60 min por tan solo $400 MXN</div>
+                <br><br>
+                <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
+                    📅 Agendar una cita
+                </button>
+                <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+                    <span class="option-icon">🧖🏻‍♀️</span>
+                    <span class="option-text">Masajes</span>
+                </button>
+                <button class="servOpn" onclick="menuPrincipal()">
+                    🏠 Menú principal
+                </button>
+                `, "bot"
+            );
+            return;
+        case message.includes("shiatsu"): 
+            mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, SHIATSU EN SILLA, 
+                ¿Que dia tienes disponible?`;           
+            addMessage(
+                `Masaje realizado en silla ergonómica, enfocado principalmente en espalda, cuello y hombros para 
+                liberar tensión y proporcionar relajación se puede trabajar con ropa puesta.
+                <br><br>
+                Incluye:
+                <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
+                    <li style="margin-bottom: 8px";>Silla ergonomica, espalda, cuello y hombros.</li>
+                </ul>   
+                <div style="margin: 8px 0; pandding-left: 0">Duración de 30 min por tan solo $400 MXN</div>
+                <br><br>
+                <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
+                    📅 Agendar una cita
+                </button>
+                <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+                    <span class="option-icon">🧖🏻‍♀️</span>
+                    <span class="option-text">Masajes</span>
+                </button>
+                <button class="servOpn" onclick="menuPrincipal()">
+                    🏠 Menú principal
+                </button>
+                `, "bot"
+            );
+            return;
+        default:
+            addMessage(
+            `¿Me ayudas a especificar mejor el servicio que necesitas?, por favor.
+            <br><br>
+            <div style="font-style: italic; font-weight: bold;">
+                "Ejem: Masaje Relajante Corto, Masaje mixto cuerpo completo"
+            </div>
+            <br><br>
+            Selecciona una opcion de nuestro Menu de inicio
+            <br><br>
+            <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
+            <span class="option-icon">🧖🏻‍♀️</span>
+            <span class="option-text">Masajes</span>
+            </button>`, "bot"
+        );
+        return;
+    };
     if (message.includes("masaje") == true){
         console.log("mensaje contiene la palabra masaje");
         switch(true){
@@ -582,7 +706,7 @@ function botResponse(text){
                         </button>
                         `, "bot"
                     );
-                } else if (message.includes("cuerpo completo")) {
+                } else if (message.includes("cuerpo completo") || message.includes("completo")) {
                     mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, MASAJE MIXTO CUERPO COMPLETO, 
                     ¿Que dia tienes disponible?`;
                     addMessage(
@@ -737,129 +861,7 @@ function botResponse(text){
                         "bot"
                     );
                 };
-                return;
-            case message.includes("chocolaterapia"):
-                mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, CHOCOLATERAPIA, 
-                    ¿Que dia tienes disponible?`;
-                addMessage(
-                    `Experiencia corporal única que combina la técnica de masaje de 3 tiempos, (exfoliación, masaje chocolate, 
-                    masaje de sellado con crema) productos a base de chocolate orgánico dejando la piel suave y relajación total.
-                    <br><br>
-                    Incluye:
-                    <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
-                        <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
-                        <li>Boca Arriba: Rostro, cuello, hombros, pectoral, abdomen, piernas, pantorrilla delantera y pies.</li>
-                    </ul>   
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 80 min por tan solo $1500 MXN</div>
-                    <br><br>
-                    <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
-                        📅 Agendar una cita
-                    </button>
-                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                        <span class="option-icon">🧖🏻‍♀️</span>
-                        <span class="option-text">Masajes</span>
-                    </button>
-                    <button class="servOpn" onclick="menuPrincipal()">
-                        🏠 Menú principal
-                    </button>
-                    `, "bot"
-                );
-                break;
-            case message.includes("bambuterapia"):
-                mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, BAMBUTERAPIA, 
-                    ¿Que dia tienes disponible?`;
-                addMessage(
-                    `Masaje relajante realizado con cañas de bambú que ayuda a trabajar la tensión muscular y proporcionar 
-                    relajación corporal completa.
-                    <br><br>
-                    Incluye:
-                    <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
-                        <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
-                        <li>Boca Arriba: Rostro, cuello, hombros, pectoral, abdomen, piernas, pantorrilla delantera y pies.</li>
-                    </ul>   
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 80 min por tan solo $850 MXN</div>
-                    <br><br>
-                    <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
-                        📅 Agendar una cita
-                    </button>
-                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                        <span class="option-icon">🧖🏻‍♀️</span>
-                        <span class="option-text">Masajes</span>
-                    </button>
-                    <button class="servOpn" onclick="menuPrincipal()">
-                        🏠 Menú principal
-                    </button>
-                    `, "bot"
-                );
-                break;
-            case message.includes("reflexología"):
-                mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, REFLEXOLOGIA PODAL, 
-                    ¿Que dia tienes disponible?`;
-                addMessage(
-                    `Técnica de masaje enfocada en los pies para favorecer la relajación y aliviar la sensación de 
-                    cansancio, al mismo tiempo aliviando molestias en órganos espejo conectado por el sistema nervioso.
-                    <br><br>
-                    Incluye:
-                    <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
-                        <li style="margin-bottom: 8px";>Boca Abajo: Pies, piernas, brazos, hombros, cuello y espalda.</li>
-                    </ul>   
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 60 min por tan solo $400 MXN</div>
-                    <br><br>
-                    <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
-                        📅 Agendar una cita
-                    </button>
-                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                        <span class="option-icon">🧖🏻‍♀️</span>
-                        <span class="option-text">Masajes</span>
-                    </button>
-                    <button class="servOpn" onclick="menuPrincipal()">
-                        🏠 Menú principal
-                    </button>
-                    `, "bot"
-                );
-                break;
-            case message.includes("shiatsu"): 
-                mensajeInfo = `Hola Michell Spa, quiero hacer una cita para, SHIATSU EN SILLA, 
-                    ¿Que dia tienes disponible?`;           
-                addMessage(
-                    `Masaje realizado en silla ergonómica, enfocado principalmente en espalda, cuello y hombros para 
-                    liberar tensión y proporcionar relajación se puede trabajar con ropa puesta.
-                    <br><br>
-                    Incluye:
-                    <ul style="list-style: none; padding-left: 0; pandding: 0; margin: 12px 0">
-                        <li style="margin-bottom: 8px";>Silla ergonomica, espalda, cuello y hombros.</li>
-                    </ul>   
-                    <div style="margin: 8px 0; pandding-left: 0">Duración de 30 min por tan solo $400 MXN</div>
-                    <br><br>
-                    <button id="btnCita" class="servOpn" onclick="openWhatsapp()">
-                        📅 Agendar una cita
-                    </button>
-                    <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                        <span class="option-icon">🧖🏻‍♀️</span>
-                        <span class="option-text">Masajes</span>
-                    </button>
-                    <button class="servOpn" onclick="menuPrincipal()">
-                        🏠 Menú principal
-                    </button>
-                    `, "bot"
-                );
-                break;
-            default:
-                addMessage(
-                `¿Me ayudas a especificar mejor el servicio que necesitas?, por favor.
-                <br><br>
-                <div style="font-style: italic; font-weight: bold;">
-                    "Ejem: Masaje Relajante Corto, Masaje mixto cuerpo completo"
-                </div>
-                <br><br>
-                Selecciona una opcion de nuestro Menu de inicio
-                <br><br>
-                <button id="opnCorp" class="servOpn" onclick="opnServ('masajes')">
-                <span class="option-icon">🧖🏻‍♀️</span>
-                <span class="option-text">Masajes</span>
-                </button>`, "bot"
-            );
-            break;
+            return;
         };
     }else if (message.includes("limpieza") == true){
         console.log("mensaje contiene la palabra limpieza");
@@ -930,7 +932,7 @@ function botResponse(text){
             `¿Me ayudas a especificar mejor el servicio que necesitas?, por favor.
             <br><br>
             <div style="font-style: italic; font-weight: bold;">
-                "Ejem: Masaje Relajante Corto, Limpieza Facial Profunda"
+                "Ejem: Masaje Relajante Corto, Limpieza Facial Profunda, Bambuterapia"
             </div>
             <br><br>
             Selecciona una opcion de nuestro Menu de inicio
