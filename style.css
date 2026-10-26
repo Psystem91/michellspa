@@ -35,17 +35,32 @@ body {
     width: 65px;
     height: 65px;
     /*border-radius: 50%;*/
+    background: transparent;
     border: none;
+    box-shadow: none;
+    padding: 0;
     /*background-color: #25d366;*/
     /*color: white;*/
-    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.30);
+    z-index: 1000;
+    /*font-size: 32px;*/    
 }
 
-#whatappButton:hover{
-    background-color: #1ebe5d;
-    transform: scale(1.05);
+#whatsappButton img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+#whatsappButton:hover{
+    background: transparent;
+    transform: scale(1.30);
+    transition: transform 0.3s ease;
+    /*background-color: #1ebe5d;
+    transform: scale(1.05);*/
 }
 
 .redes{
@@ -64,6 +79,10 @@ body {
     height: 100%;
     object-fit: contain;
     padding: 25px;
+}
+
+.redes:hover{
+    transform: scale(1.30);
 }
 
 .instagra{
