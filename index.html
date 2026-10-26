@@ -8,53 +8,68 @@
 
 </head>
 <body>
-    <div class="contenido">
-        <h1>Spa Michell</h1>
-        <h2>Bienvenido a nuestro sitio</h2>
-        <p>Prueba de sincronozacion</p>
-        <p>Prueba de sincronozacion desde VSCode</p>
-        <p>Preciona el boton de Whatapp para recibir nuestra asistencia</p>
-    </div>
-    <button id="whatsappButton" onclick="openChat()">
-        <img src="Imagenes/iconoWhat.png" alt="iconoWhat">
-    </button>
-    <div id="chatContainer">
-        <div class="chat-header"">
-            <div class="imgChat">
-                <img src="Imagenes/logoLinea.jpeg" alt="logo linea">
-            </div>
-            <div>
-                <h3>Michell Spa</h3>
-                <small>🟢 En linea</small>
-            </div>
-            <span id="closeChat" onclick="closeChat()">×</span>
+    <div class="cuadro">
+        <header class="encabezado">
+            <h1>Spa Michell</h1>
+            <nav class="redes">
+                <a href="https://www.facebook.com/share/1CHniQaLCZ/?mibextid=wwXIfr">
+                    <img src="Imagenes/face.webp" alt="face" class="faceb">
+                </a>
+                <a href="https://www.instagram.com/michell.spa77?dlrf=M295bmtpMHBmeWpp&u
+                tm_source=qr">
+                    <img src="Imagenes/insta.webp" alt="instagram">
+                </a>
+            </nav>
+        </header>
+        <div class="imegenFont">
+            <img src="Imagenes/font.webp" alt="spa" class="imgenFond">
         </div>
-        <div id="chatMessenger">
-            <div class="message bot">
-                👋 ¡Hola!, soy SpaBot 🤖 
-                <br><br>
-                Bienvenido a MICHELL SPA.
-                <br><br>
-                Selecciona una opcion del Menu
-            </div>
-            <div class="option">
-                <!--<button id="btnInformacion" class="option-button" onclick="selectOption('Informacion')">
-                   📋 Solicitar Informacion
-                </button>-->
-                <button id="btnServicios" class="option-button" onclick="selectOption('servicios')">
-                    💆 Nuestros Servicios
-                </button>
-                <button id="btnCita" class="option-button" onclick="selectOption('cita')">
-                    📅 Agendar una cita
-                </button>
-                <!--<button id="btnOperador" class="option-button" onclick="selectOption('operador')">
-                    💬 Hablar con un asesor
-                </button>-->
-            </div>
+        <div class="contenido">
+            
+            <h2>Bienvenido a nuestro sitio</h2>
+            <p>Preciona el boton de Whatapp para recibir nuestra asistencia</p>
         </div>
-        <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Escribe tu Mensaje">
-            <button id="userInput" class="sendButton" onclick="sendMessage()">Enviar</button>
+        <button id="whatsappButton" onclick="openChat()">
+            <img src="Imagenes/iconoWhat.png" alt="iconoWhat">
+        </button>
+        <div id="chatContainer">
+            <div class="chat-header"">
+                <div class="imgChat">
+                    <img src="Imagenes/logoLinea.jpeg" alt="logo linea">
+                </div>
+                <div>
+                    <h3>Michell Spa</h3>
+                    <small>🟢 En linea</small>
+                </div>
+                <span id="closeChat" onclick="closeChat()">×</span>
+            </div>
+            <div id="chatMessenger">
+                <div class="message bot">
+                    👋 ¡Hola!, soy SpaBot 🤖 
+                    <br><br>
+                    Bienvenido a MICHELL SPA.
+                    <br><br>
+                    Selecciona una opcion del Menu
+                </div>
+                <div class="option">
+                    <!--<button id="btnInformacion" class="option-button" onclick="selectOption('Informacion')">
+                    📋 Solicitar Informacion
+                    </button>-->
+                    <button id="btnServicios" class="option-button" onclick="selectOption('servicios')">
+                        💆 Nuestros Servicios
+                    </button>
+                    <button id="btnCita" class="option-button" onclick="selectOption('cita')">
+                        📅 Agendar una cita
+                    </button>
+                    <!--<button id="btnOperador" class="option-button" onclick="selectOption('operador')">
+                        💬 Hablar con un asesor
+                    </button>-->
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Escribe tu Mensaje">
+                <button id="userInput" class="sendButton" onclick="sendMessage()">Enviar</button>
+            </div>
         </div>
     </div>
     <!--<script src="scrip.js">
