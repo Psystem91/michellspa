@@ -7,6 +7,8 @@ const today = new Intl.DateTimeFormat("en-CA", {
 
 document.getElementById("day").min = today;
 
+const API_BASE_URL ="https://michellspa-api.onrender.com";
+
 //const { time } = require("node:console");
 
 const form = document.getElementById("form");
@@ -48,8 +50,9 @@ search.addEventListener("click", async () => {
             day: day.value,
             service: service.value
         });
-        const response = await fetch(`/api/availability?${params}`);
+        //const response = await fetch(`/api/availability?${params}`);
         //const response = await fetch(`http://localhost:3000/api/availability?${params}`);
+        const response = await fetch(`${API_BASE_URL}/api/availability?${params}`);
         console.log(response);
         const data = await response.json();
         if(!response.ok)throw new Error(data.error);
@@ -94,7 +97,9 @@ form.addEventListener("submit", async event => {
   };
 
   try {
-    const response = await fetch("/api/book", {
+    //const response = await fetch("/api/book", {
+    //const response = await fetch("http://localhost:3000/api/book", {
+    const response = await fetch(`${API_BASE_URL}/api/book`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking)
