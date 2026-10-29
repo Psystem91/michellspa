@@ -1,0 +1,20 @@
+{
+  "name": "michellspa",
+  "version": "1.0.0",
+  "description": "Es un chatbot que para poder hacer facilitar la conversacion con un cliente y poder resolver dudas especificas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "googleapis": "^178.0.0",
+    "luxon": "^3.7.2"
+  }
+}

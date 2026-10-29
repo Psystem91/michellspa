@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/agenda.css">
-    <link rel="script" href="scrip/agenda.js">
     <title>Agenda Cita</title>
 </head>
 <body>
@@ -15,10 +14,11 @@
             <p>📅 Agenda tu cita con SpaBot</p>
         </header>
         <form id="form">
-            <fieldset id="fields" disabled>
-                <small>Lunes a viernes de 11:00 a 14:00 hrs y 16:00 a 20:00 hrs sabado de 12:00 a 16:00 hrs
+            <fieldset id="fields">
+                <small>Lunes a viernes de 11:00 a 14:00 hrs y 16:00 a 19:00 hrs sabado de 12:00 a 16:00 hrs
                     <br>
-                    Hora de Ciudad de México. Dos cita a la vez, con 10 minutos entre citas. Anticipación mínima: 30 minutos.
+                    Hora de Ciudad de México. Maximo dos cita simultaneas, con 10 minutos entre citas. 
+                    Anticipación mínima: 30 minutos.
                 </small>
                 <label for="name">Nombre</label>
                 <input id="name" maxlength="80" minlength="2" autocomplete="name" required>
@@ -40,14 +40,18 @@
                     <label>Sitio web<input id="website" tabindex="-1" autocomplete="off"></label>
                 </div>
                 <label>
-                    <input id="consent" type="checkbox" required> Acepto que Michell Spa guarde mi nombre y teléfono en su calendario privado para gestionar esta cita.
+                    <input id="consent" type="checkbox" required> Acepto que Michell Spa guarde mi 
+                    nombre y teléfono en su calendario privado para gestionar esta cita.
                 </label>
-                <small>Los horarios se verifican otra vez al confirmar. El último tratamiento puede terminar a las 19:00.</small>
-                <button type="submit" id="book" disabled>Confirmar cita</button>
+                <small>Los horarios se verifican otra vez al confirmar. El último tratamiento puede 
+                    terminar a las 19:00.
+                </small>
+                <button type="submit" id="book">Confirmar cita</button>
             </fieldset>
         </form>
         <p id="status" role="status" aria-live="polite">Iniciando agenda…</p>
-    </main>
-    
+    </main>  
 </body>
+<script src="scrip/agenda.js" defer></script>
+<!--<script src="scrip/server.js" defer></script>-->
 </html>
