@@ -34,9 +34,8 @@ const calendar = google.calendar({
     version:"v3", auth
 });*/
 const { authorize } = require("./googleAuth");
-let calendar;
+//let calendar;
 async function startServer() {
-  try {
     const auth = await authorize();
     calendar = google.calendar({
       version: "v3",
@@ -44,7 +43,7 @@ async function startServer() {
     });
     app.listen(PORT, () => {
       console.log(
-        `Agenda disponible en http://localhost:${PORT}/agenda.html`
+        `Servidor Iniciado`
       );
     });
   } catch (error) {
