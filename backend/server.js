@@ -35,8 +35,9 @@ const calendar = google.calendar({
 });*/
 const { authorize } = require("./googleAuth");
 //let calendar;
-async function startServer() {
+/*async function startServer() {
     const auth = await authorize();
+    try{
     calendar = google.calendar({
       version: "v3",
       auth
@@ -50,7 +51,7 @@ async function startServer() {
     console.error("Error de autenticación:", error.message);
     process.exit(1);
   }
-}
+}*/
 startServer();
 /*se agregaran las opciones las cuales se agendaran, despues
 se colocaran con una variable*/
