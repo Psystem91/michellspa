@@ -25,7 +25,7 @@ app.get("/health", (req, res) => {
 //app.use(express.static(path.join(__dirname, "michellspa")));
 const TZ = "America/Mexico_City";
 const CALENDAR_ID = process.env.CALENDAR_ID;
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 10000;
 /*const auth = new google.auth.GoogleAuth({
     keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     scopes:["https://www.googleapis.com/auth/calendar.events"]
