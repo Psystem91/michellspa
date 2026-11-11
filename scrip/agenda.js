@@ -50,9 +50,13 @@ search.addEventListener("click", async () => {
             day: day.value,
             service: service.value
         });
+        const url = `${API_BASE_URL}/api/availability?${params.toString()}`;
+        console.log("Consultando API:", url);
         //const response = await fetch(`/api/availability?${params}`);
         //const response = await fetch(`http://localhost:3000/api/availability?${params}`);
-        const response = await fetch(`${API_BASE_URL}/api/availability?${params}`);
+        //const response = await fetch(`${API_BASE_URL}/api/availability?${params}`);
+        console.log("Consultando API:", url);
+        const response = await fetch(url);
         console.log(response);
         const data = await response.json();
         if(!response.ok)throw new Error(data.error);
