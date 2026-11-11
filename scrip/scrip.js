@@ -1,6 +1,6 @@
 let mensajeInfo = "";
 
-const whatsappNumber = "525534810115"
+const whatsappNumber = "529611321572"
 //const whatsappNumber = "525532536329"
 function openChat(){
     document.getElementById("chatContainer").style.display = "block";
@@ -90,7 +90,14 @@ function selectOption(option){
             addMessage("Quiero Agendar una Cita", "user");
             setTimeout(function(){
                 addMessage(
-                    `🚧 Agenda en Mantenimiento 💻⚙️
+                    `📅 ¡Agenda tu cita en Michell Spa! 💆🏻‍♀️
+                    <br><br>
+                    Selecciona tu tratamiento, fecha y horario
+                    disponible para reservar tu cita.
+                    <br><br>
+                    <button class="servOpn" onclick="window.open('https://psystem91.github.io/michellspa/agenda.html', '_blank')">
+                         📅 Agendar una cita
+                    </button>
                     <br><br>
                     <button class="servOpn" onclick="menuPrincipal()">
                         🏠 Menú principal
