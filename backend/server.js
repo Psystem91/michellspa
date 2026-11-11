@@ -52,7 +52,7 @@ const { authorize } = require("./googleAuth");
     process.exit(1);
   }
 }*/
-startServer();
+//startServer();
 /*se agregaran las opciones las cuales se agendaran, despues
 se colocaran con una variable*/
 const SERVICES = {
