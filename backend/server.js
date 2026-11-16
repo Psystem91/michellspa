@@ -173,9 +173,3 @@ app.post(
     }
   }
 );
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(
-    `Michell Spa API escuchando en ${PORT}`
-  );
-});
