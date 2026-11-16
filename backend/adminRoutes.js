@@ -33,20 +33,22 @@ router.get("/citas", async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT
-         id,
-         nombre_cliente,
-         servicio_id,
-         inicio,
-         fin
-         to_char(
-                fin AT TIME ZONE 'America/Mexico_City',
-                'YYYY-MM-DD"T"HH24:MI:SS'
-            ) AS fin_local
-       FROM public.citas
-       WHERE estado = 'confirmada'
-         AND inicio < $2
-         AND fin > $1
-       ORDER BY inicio`,
+      id,
+      nombre_cliente,
+      servicio_id,
+      to_char(
+        inicio AT TIME ZONE 'America/Mexico_City',
+        'YYYY-MM-DD"T"HH24:MI:SS'
+      ) AS inicio_local,
+      to_char(
+        fin AT TIME ZONE 'America/Mexico_City',
+        'YYYY-MM-DD"T"HH24:MI:SS'
+      ) AS fin_local
+    FROM public.citas
+    WHERE estado = 'confirmada'
+      AND inicio < $2
+      AND fin > $1
+    ORDER BY inicio`,
       [startDate, endDate]
     );
 
