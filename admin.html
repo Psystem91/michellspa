@@ -3,9 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style/admin.css">
+    <title>Administracion</title>
 </head>
 <body>
-    
+    <header>
+        <h1>Michell SPA Administracion</h1>
+        <button id="logout-button" class="hidden">
+            Cerrar Sesion
+        </button>
+    </header>
+    <main>
+        <section id="login-section" class="panel">
+            <h2>Acceso administrativo</h2>
+            <p>Incia sesion para consultar citas</p>
+            <form id="login-form">
+                <input id="email" type="email" placeholder="correo electronico" autocomplete="username" required>
+                <input id="password" type="password" placeholder="contraseña" autocomplete="current-password" required>
+                <button id="login-button" type="submit">
+                    Inicia Sesion
+                </button>
+            </form>
+        </section>
+        <section id="admin-section" class="panel hidden">
+            <h2>Calendario de citas</h2>
+            <p id="admin-email"></p>
+            <div id="calendar"></div>
+        </section>
+        <p id="message" role="status" aria-live="polite"></p>
+    </main>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.22/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.22/locales/es.global.min.js"></script>
+<script src="scrip/admin.js" defer></script>
 </html>
