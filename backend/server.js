@@ -21,9 +21,13 @@ const PORT = Number(process.env.PORT) || 4000;
 app.use(cors({
   origin: process.env.FRONTEND_ORIGIN ||
     "https://psystem91.github.io",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
+  methods: ["GET", "POST", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+const adminRoutes = require("./adminRoutes");
+
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(
