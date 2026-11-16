@@ -38,6 +38,10 @@ router.get("/citas", async (req, res) => {
          servicio_id,
          inicio,
          fin
+         to_char(
+                fin AT TIME ZONE 'America/Mexico_City',
+                'YYYY-MM-DD"T"HH24:MI:SS'
+            ) AS fin_local
        FROM public.citas
        WHERE estado = 'confirmada'
          AND inicio < $2
