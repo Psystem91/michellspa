@@ -1,15 +1,15 @@
 require("dotenv").config();
 
 const express = require("express");
-const cors = require("cors");
+//const cors = require("cors");
+const pool = require("./database");
 const { rateLimit } = require("express-rate-limit");
-
 const {
   getAvailability,
   bookAppointment
 } = require("./reservas");
 
-const pool = require("./database");
+
 
 const app = express();
 
@@ -24,6 +24,12 @@ app.use(cors({
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(
+    `Michell Spa API escuchando en ${PORT}`
+  );
+});
 
 app.use(express.json({ limit: "10kb" }));
 
