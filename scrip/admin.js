@@ -7,6 +7,9 @@ const SUPABASE_KEY = "sb_publishable_tJRZ4vIS6US2n9GTyiUeQQ_t3_M3O0A";
 const API_URL =
   "https://michellspa-api.onrender.com";
 
+console.log("URL Supabase:", SUPABASE_URL);
+console.log("URL válida:", URL.canParse(SUPABASE_URL));  
+
 const client = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
