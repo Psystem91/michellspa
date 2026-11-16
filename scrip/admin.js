@@ -1,8 +1,8 @@
 
 const SUPABASE_URL =
-  "sb_publishable_tJRZ4vIS6US2n9GTyiUeQQ_t3_M3O0A";
+  "https://wqwdcbsfvhohqjpbdcoa.supabase.co/rest/v1/";
 
-const SUPABASE_KEY = "TU_PUBLISHABLE_KEY";
+const SUPABASE_KEY = "sb_publishable_tJRZ4vIS6US2n9GTyiUeQQ_t3_M3O0A";
 
 const API_URL =
   "https://michellspa-api.onrender.com";
