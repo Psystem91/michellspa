@@ -189,8 +189,21 @@ loginForm.addEventListener("submit", async event => {
         password
       });
 
-    if (error) {
+    /*if (error) {
       throw new Error("Correo o contraseña incorrectos");
+    }*/
+    if (error) {
+        console.error("Supabase Auth:", {
+            status: error.status,
+            code: error.code,
+            message: error.message
+        });
+
+    throw new Error(
+            error.message === "Invalid login credentials"
+            ? "Correo o contraseña incorrectos"
+            : "Error de autenticación: " + error.message
+        );
     }
 
     const { data } = await client.auth.getUser();
