@@ -8,6 +8,22 @@ const today = new Intl.DateTimeFormat("en-CA", {
 document.getElementById("day").min = today;
 
 const API_BASE_URL ="https://michellspa-api.onrender.com";
+const params = new URLSearchParams({
+  day: day.value,
+  service: service.value
+});
+
+const response = await fetch(
+  `${API_BASE_URL}/api/availability?${params}`
+);
+
+const data = await response.json();
+
+if (!response.ok) {
+  throw new Error(
+    data.error || "No fue posible consultar horarios"
+  );
+}
 
 //const { time } = require("node:console");
 
@@ -103,16 +119,35 @@ form.addEventListener("submit", async event => {
   try {
     //const response = await fetch("/api/book", {
     //const response = await fetch("http://localhost:3000/api/book", {
-    const response = await fetch(`${API_BASE_URL}/api/book`, {
+    /*const response = await fetch(`${API_BASE_URL}/api/book`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking)
-    });
+    });*/
+    const response = await fetch(
+      `${API_BASE_URL}/api/book`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: nameInput.value.trim(),
+            phone: phone.value.trim(),
+            service: service.value,
+            day: day.value,
+            time: slots.value,
+            consent: consent.checked,
+            website: website.value
+          })
+        }
+      );
 
     const result = await response.json();
 
-    if (!response.ok) throw new Error(result.error);
-
+    if (!response.ok) {
+        throw new Error(result.error || "No se pudo guardar la cita");
+      }
     statusText.textContent =
       `¡Cita confirmada para el ${booking.day} a las ${booking.time}!`;
 
@@ -124,3 +159,4 @@ form.addEventListener("submit", async event => {
     book.disabled = false;
   }
 });
+
