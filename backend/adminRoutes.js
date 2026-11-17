@@ -39,11 +39,11 @@ router.get("/citas", async (req, res) => {
       to_char(
         inicio AT TIME ZONE 'America/Mexico_City',
         'YYYY-MM-DD"T"HH24:MI:SS'
-      ) AS cita.inicio_local,
+      ) AS inicio_local,
       to_char(
         fin AT TIME ZONE 'America/Mexico_City',
         'YYYY-MM-DD"T"HH24:MI:SS'
-      ) AS cita.fin_local
+      ) AS fin_local
     FROM public.citas
     WHERE estado = 'confirmada'
       AND inicio < $2
