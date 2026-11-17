@@ -157,12 +157,13 @@ function createCalendar() {
       },
 
       eventClick(info) {
-        const cita = info.event;
+        /*const cita = info.event;
 
         alert(
           `Cita: ${cita.title}\n` +
           `Inicio: ${cita.start?.toLocaleString("es-MX")}`
-        );
+        );*/
+        showAppointmentDetails(info.event);
       }
     }
   );
@@ -257,5 +258,197 @@ client.auth.onAuthStateChange((event) => {
     showLogin();
   }
 });
+
+const appointmentDialog =
+  document.getElementById("appointment-dialog");
+
+const blockDialog =
+  document.getElementById("block-dialog");
+
+let selectedAppointmentId = null;
+
+async function adminRequest(path, method, body) {
+  const { data, error } =
+    await client.auth.getSession();
+
+  if (error || !data.session) {
+    throw new Error("Debes iniciar sesión");
+  }
+
+  const response = await fetch(`${API_URL}${path}`, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        `Bearer ${data.session.access_token}`
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.error || `Error HTTP ${response.status}`
+    );
+  }
+
+  return result;
+}
+
+function showAppointmentDetails(event) {
+  selectedAppointmentId = event.id;
+
+  const details = event.extendedProps;
+
+  document.getElementById("detail-name")
+    .textContent = details.nombre || "";
+
+  document.getElementById("detail-phone")
+    .textContent = details.telefono || "";
+
+  document.getElementById("detail-service")
+    .textContent = details.servicio || "";
+
+  const start = event.startStr.slice(0, 16);
+  const end = event.endStr.slice(0, 16);
+
+  document.getElementById("detail-schedule")
+    .textContent = `${start} a ${end}`;
+
+  document.getElementById("new-day")
+    .value = start.slice(0, 10);
+
+  document.getElementById("new-time")
+    .value = start.slice(11, 16);
+
+  appointmentDialog.showModal();
+}
+
+document.getElementById("close-appointment")
+  .addEventListener("click", () => {
+    appointmentDialog.close();
+  });
+
+document.getElementById("cancel-appointment")
+  .addEventListener("click", async () => {
+    if (!selectedAppointmentId) return;
+
+    const confirmed = confirm(
+      "¿Deseas cancelar esta cita? " +
+      "El horario quedará disponible nuevamente."
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await adminRequest(
+        `/api/admin/citas/${selectedAppointmentId}`,
+        "PATCH",
+        { estado: "cancelada" }
+      );
+
+      appointmentDialog.close();
+      calendar.refetchEvents();
+      showMessage("Cita cancelada correctamente");
+
+    } catch (error) {
+      showMessage(error.message);
+    }
+  });
+
+document.getElementById("reschedule-form")
+  .addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!selectedAppointmentId) return;
+
+    const day =
+      document.getElementById("new-day").value;
+
+    const time =
+      document.getElementById("new-time").value;
+
+    if (!confirm(
+      `¿Reprogramar la cita al ${day} a las ${time}?`
+    )) return;
+
+    try {
+      await adminRequest(
+        `/api/admin/citas/${selectedAppointmentId}`,
+        "PATCH",
+        {
+          estado: "confirmada",
+          day,
+          time
+        }
+      );
+
+      appointmentDialog.close();
+      calendar.refetchEvents();
+      showMessage("Cita reprogramada correctamente");
+
+    } catch (error) {
+      showMessage(error.message);
+    }
+  });
+
+document.getElementById("new-block")
+  .addEventListener("click", () => {
+    blockDialog.showModal();
+  });
+
+document.getElementById("close-block")
+  .addEventListener("click", () => {
+    blockDialog.close();
+  });
+
+const blockAllDay =
+  document.getElementById("block-all-day");
+
+blockAllDay.addEventListener("change", () => {
+  document.getElementById("block-hours")
+    .hidden = blockAllDay.checked;
+});
+
+document.getElementById("block-form")
+  .addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const payload = {
+      day: document.getElementById("block-day").value,
+
+      allDay: blockAllDay.checked,
+
+      startTime:
+        document.getElementById("block-start").value,
+
+      endTime:
+        document.getElementById("block-end").value,
+
+      motivo:
+        document.getElementById("block-reason").value
+    };
+
+    if (!confirm(
+      "¿Deseas bloquear este horario?"
+    )) return;
+
+    try {
+      await adminRequest(
+        "/api/admin/bloqueos",
+        "POST",
+        payload
+      );
+
+      blockDialog.close();
+      showMessage("Horario bloqueado correctamente");
+
+    } catch (error) {
+      showMessage(error.message);
+    }
+  });
+
+
 
 initialize();

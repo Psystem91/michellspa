@@ -28,7 +28,89 @@
         <section id="admin-section" class="panel hidden">
             <h2>Calendario de citas</h2>
             <p id="admin-email"></p>
-            <div id="calendar"></div>
+            <div id="calendar">
+                <div style="margin-top:20px">
+                    <button type="button" id="new-block">
+                        Bloquear horario o día
+                    </button>
+                </div>
+                <!-- Detalles y modificación de citas -->
+                <dialog id="appointment-dialog">
+                    <h2>Detalles de la cita</h2>
+
+                    <p><strong>Cliente:</strong>
+                        <span id="detail-name"></span></p>
+
+                    <p><strong>Teléfono:</strong>
+                        <span id="detail-phone"></span></p>
+
+                    <p><strong>Servicio:</strong>
+                        <span id="detail-service"></span></p>
+
+                    <p><strong>Horario:</strong>
+                        <span id="detail-schedule"></span></p>
+
+                    <form id="reschedule-form">
+                        <h3>Reprogramar cita</h3>
+
+                        <label for="new-day">Nueva fecha</label>
+                        <input type="date" id="new-day" required>
+
+                        <label for="new-time">Nueva hora</label>
+                        <input type="time" id="new-time"
+                            step="600" required>
+
+                        <button type="submit">
+                        Guardar nuevo horario
+                        </button>
+                    </form>
+
+                    <button type="button" id="cancel-appointment">
+                        Cancelar cita
+                    </button>
+
+                    <button type="button" id="close-appointment">
+                        Cerrar
+                    </button>
+                </dialog>
+
+                <!-- Bloqueo de horarios -->
+                <dialog id="block-dialog">
+                    <h2>Bloquear disponibilidad</h2>
+
+                    <form id="block-form">
+                        <label for="block-day">Fecha</label>
+                        <input type="date" id="block-day" required>
+
+                        <label>
+                        <input type="checkbox" id="block-all-day">
+                        Bloquear día completo
+                        </label>
+
+                        <div id="block-hours">
+                        <label for="block-start">Hora inicial</label>
+                        <input type="time" id="block-start"
+                                value="11:00" step="600">
+
+                        <label for="block-end">Hora final</label>
+                        <input type="time" id="block-end"
+                                value="14:00" step="600">
+                        </div>
+
+                        <label for="block-reason">Motivo</label>
+                        <input type="text" id="block-reason"
+                            maxlength="200"
+                            placeholder="Ej. Descanso o mantenimiento"
+                            required>
+
+                        <button type="submit">Guardar bloqueo</button>
+
+                        <button type="button" id="close-block">
+                        Cerrar
+                        </button>
+                    </form>
+                </dialog>
+            </div>
         </section>
         <p id="message" role="status" aria-live="polite"></p>
     </main>

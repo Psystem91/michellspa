@@ -80,3 +80,32 @@
       header h1 { font-size: 17px; }
       .panel { padding: 16px; }
     }
+
+    dialog {
+      width: min(460px, 94vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 0;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 12px 45px #0003;
+    }
+
+    dialog::backdrop {
+      background: #0008;
+    }
+
+    dialog button {
+      margin: 8px 5px 0 0;
+    }
+
+    dialog label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+
+    dialog input[type="checkbox"] {
+      width: auto;
+    }
+
