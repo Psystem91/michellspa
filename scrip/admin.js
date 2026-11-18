@@ -382,13 +382,14 @@ document.getElementById("reschedule-form")
 
       try {
         await adminRequest()
-          /*`/api/admin/citas/${selectedAppointmentId}`,
+          `/api/admin/citas/${selectedAppointmentId}`,
           "PATCH",
           {
             estado: "confirmada",
             day,
             time
-          }*/
+          }
+        
           document.getElementById("reschedule-form")
           .addEventListener("submit", async event => {
               event.preventDefault();
