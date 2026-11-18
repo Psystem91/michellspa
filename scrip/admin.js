@@ -365,40 +365,86 @@ document.getElementById("cancel-appointment")
   });
 
 document.getElementById("reschedule-form")
-  .addEventListener("submit", async event => {
-    event.preventDefault();
+    .addEventListener("submit", async event => {
+      event.preventDefault();
 
-    if (!selectedAppointmentId) return;
+      if (!selectedAppointmentId) return;
 
-    const day =
-      document.getElementById("new-day").value;
+      const day =
+        document.getElementById("new-day").value;
 
-    const time =
-      document.getElementById("new-time").value;
+      const time =
+        document.getElementById("new-time").value;
 
-    if (!confirm(
-      `¿Reprogramar la cita al ${day} a las ${time}?`
-    )) return;
+      if (!confirm(
+        `¿Reprogramar la cita al ${day} a las ${time}?`
+      )) return;
 
-    try {
-      await adminRequest(
-        `/api/admin/citas/${selectedAppointmentId}`,
-        "PATCH",
-        {
-          estado: "confirmada",
-          day,
-          time
+      try {
+        await adminRequest()
+          /*`/api/admin/citas/${selectedAppointmentId}`,
+          "PATCH",
+          {
+            estado: "confirmada",
+            day,
+            time
+          }*/
+          document.getElementById("reschedule-form")
+          .addEventListener("submit", async event => {
+              event.preventDefault();
+
+              if (!selectedAppointmentId) {
+                showMessage("Selecciona una cita");
+                return;
+              }
+
+              const day =
+                document.getElementById("new-day").value;
+
+              const time =
+                document.getElementById("new-time").value;
+
+              if (!day || !time) {
+                showMessage("Selecciona fecha y hora");
+                return;
+              }
+
+              if (!confirm(
+                `¿Reprogramar la cita al ${day} a las ${time}?`
+              )) return;
+
+              try {
+                const result = await adminRequest(
+                  `/api/admin/citas/${selectedAppointmentId}`,
+                  "PATCH",
+                  {
+                    estado: "confirmada",
+                    day: day,
+                    time: time
+                  }
+                );
+
+                console.log("Reprogramación:", result);
+
+                appointmentDialog.close();
+                calendar.gotoDate(day);
+                calendar.refetchEvents();
+
+                showMessage("Cita reprogramada correctamente");
+
+              } catch (error) {
+                  showMessage(error.message);
+                }
+          });
+        
+          appointmentDialog.close();
+          calendar.refetchEvents();
+          showMessage("Cita reprogramada correctamente");
+
+      } catch (error) {
+          showMessage(error.message);
         }
-      );
-
-      appointmentDialog.close();
-      calendar.refetchEvents();
-      showMessage("Cita reprogramada correctamente");
-
-    } catch (error) {
-      showMessage(error.message);
-    }
-  });
+    });
 
 document.getElementById("new-block")
   .addEventListener("click", () => {

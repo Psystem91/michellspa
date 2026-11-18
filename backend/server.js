@@ -25,8 +25,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-const adminRoutes = require("./adminRoutes");
-
 app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, "0.0.0.0", () => {
@@ -34,6 +32,8 @@ app.listen(PORT, "0.0.0.0", () => {
     `Michell Spa API escuchando en ${PORT}`
   );
 });
+
+const adminRoutes = require("./adminRoutes");
 
 app.use(express.json({ limit: "10kb" }));
 

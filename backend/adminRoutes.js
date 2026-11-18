@@ -86,6 +86,13 @@ router.get("/citas", async (req, res) => {
 router.patch("/citas/:id", async (req, res) => {
   const { id } = req.params;
   const { estado, day, time } = req.body || {};
+  
+  console.log("PATCH administrativo:", {
+    estado,
+    day,
+    time,
+    bodyKeys: Object.keys(req.body || {})
+  });
 
   if (!/^[0-9a-f-]{36}$/i.test(id)) {
     return res.status(400).json({
