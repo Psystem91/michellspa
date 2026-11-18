@@ -275,6 +275,13 @@ async function adminRequest(path, method, body) {
     throw new Error("Debes iniciar sesión");
   }
 
+  const url = `${API_URL}${path}`;
+
+  // Diagnóstico sin mostrar el token.
+  console.log("URL solicitada:", url);
+  console.log("Método HTTP:", method);
+
+
   const response = await fetch(`${API_URL}${path}`, {
     method,
     headers: {
