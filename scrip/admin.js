@@ -1,5 +1,3 @@
-const { title } = require("node:process");
-
 const SUPABASE_URL =
   "https://wqwdcbsfvhohqjpbdcoa.supabase.co";
 
@@ -15,6 +13,8 @@ const client = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+
+//const { title } = require("node:process");
 
 const loginSection =
   document.getElementById("login-section");
@@ -577,6 +577,8 @@ document.getElementById("block-form")
       );
 
       blockDialog.close();
+      calendar.gotoDate(payload.day);
+      calendar.refetchEvents();
       showMessage("Horario bloqueado correctamente");
 
     } catch (error) {
