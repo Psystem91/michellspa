@@ -169,6 +169,7 @@ function createCalendar() {
             backgroundColor: "#447FA9",
             borderColor: "#447FA9",
             textColor: "#FFFFFF",
+            display: "auto",
 
             extendedProps: {
               ...cita.extendedProps,
@@ -177,8 +178,18 @@ function createCalendar() {
           }));
 
           // los bloqueos ya llegan preparados desde el backend
-          const eventosBloqueos = bloqueos;
-          // Mostrar ambos tipos en FullCalendar
+          const eventosBloqueos = bloqueos.map(bloqueo => ({
+            ...bloqueo,
+            backgroundColor: "#AD4F62",
+            borderColor: "#AD4F62",
+            textColor: "#FFFFFF",
+            display: "auto",
+            extendedProps: {
+              ...bloqueo.extendedProps,
+              tipo: "bloqueo"
+            }
+          
+          }));
           success([
             ...eventosCitas,
             ...eventosBloqueos

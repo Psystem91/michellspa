@@ -109,3 +109,16 @@
       width: auto;
     }
 
+/* Bordes redondeados para las citas y bloqueos */
+.fc .fc-event {
+  border-radius: 6px;
+  padding: 3px 5px;
+  font-weight: 500;
+}
+
+/* Mejorar la visibilidad del texto */
+.fc .fc-event-title,
+.fc .fc-event-time {
+  font-size: 12px;
+  font-weight: 600;
+}    
