@@ -146,7 +146,8 @@ function createCalendar() {
             id: String(cita.id),
             title: cita.title,
             start: cita.start,
-            end: cita.end
+            end: cita.end,
+            extendedProps: cita.extendedProps || {}
           }));
 
           success(events);
@@ -268,6 +269,19 @@ const blockDialog =
 let selectedAppointmentId = null;
 
 async function adminRequest(path, method, body) {
+
+  // VALIDAR RUTA Y MÉTODO
+  if (
+    typeof path !== "string" ||
+    !path.startsWith("/api/admin/") ||
+    !["PATCH", "POST"].includes(method)
+  ) {
+    throw new Error(
+      "Ruta o método administrativo inválido"
+    );
+  }
+
+  // VALIDAR SESIÓN
   const { data, error } =
     await client.auth.getSession();
 
@@ -275,14 +289,14 @@ async function adminRequest(path, method, body) {
     throw new Error("Debes iniciar sesión");
   }
 
+  // CONSTRUIR URL
   const url = `${API_URL}${path}`;
 
-  // Diagnóstico sin mostrar el token.
   console.log("URL solicitada:", url);
   console.log("Método HTTP:", method);
 
-
-  const response = await fetch(`${API_URL}${path}`, {
+  // REALIZAR PETICIÓN
+  const response = await fetch(url, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -292,7 +306,8 @@ async function adminRequest(path, method, body) {
     body: body ? JSON.stringify(body) : undefined
   });
 
-  const result = await response.json();
+  const result = await response.json()
+    .catch(() => ({}));
 
   if (!response.ok) {
     throw new Error(
@@ -302,6 +317,7 @@ async function adminRequest(path, method, body) {
 
   return result;
 }
+
 
 function showAppointmentDetails(event) {
   selectedAppointmentId = event.id;
@@ -364,88 +380,71 @@ document.getElementById("cancel-appointment")
     }
   });
 
+
 document.getElementById("reschedule-form")
-    .addEventListener("submit", async event => {
-      event.preventDefault();
+  .addEventListener("submit", async event => {
+    event.preventDefault();
 
-      if (!selectedAppointmentId) return;
+    if (!selectedAppointmentId) {
+      showMessage("Selecciona una cita");
+      return;
+    }
 
-      const day =
-        document.getElementById("new-day").value;
+    const day =
+      document.getElementById("new-day").value;
 
-      const time =
-        document.getElementById("new-time").value;
+    const time =
+      document.getElementById("new-time").value;
 
-      if (!confirm(
-        `¿Reprogramar la cita al ${day} a las ${time}?`
-      )) return;
+    if (!day || !time) {
+      showMessage("Selecciona fecha y hora");
+      return;
+    }
 
-      try {
-        await adminRequest()
-          `/api/admin/citas/${selectedAppointmentId}`,
-          "PATCH",
-          {
-            estado: "confirmada",
-            day,
-            time
-          }
-        
-          document.getElementById("reschedule-form")
-          .addEventListener("submit", async event => {
-              event.preventDefault();
+    const confirmed = confirm(
+      `¿Reprogramar la cita al ${day} a las ${time}?`
+    );
 
-              if (!selectedAppointmentId) {
-                showMessage("Selecciona una cita");
-                return;
-              }
+    if (!confirmed) return;
 
-              const day =
-                document.getElementById("new-day").value;
+    const submitButton =
+      event.currentTarget.querySelector(
+        'button[type="submit"]'
+      );
 
-              const time =
-                document.getElementById("new-time").value;
+    if (submitButton) submitButton.disabled = true;
 
-              if (!day || !time) {
-                showMessage("Selecciona fecha y hora");
-                return;
-              }
-
-              if (!confirm(
-                `¿Reprogramar la cita al ${day} a las ${time}?`
-              )) return;
-
-              try {
-                const result = await adminRequest(
-                  `/api/admin/citas/${selectedAppointmentId}`,
-                  "PATCH",
-                  {
-                    estado: "confirmada",
-                    day: day,
-                    time: time
-                  }
-                );
-
-                console.log("Reprogramación:", result);
-
-                appointmentDialog.close();
-                calendar.gotoDate(day);
-                calendar.refetchEvents();
-
-                showMessage("Cita reprogramada correctamente");
-
-              } catch (error) {
-                  showMessage(error.message);
-                }
-          });
-        
-          appointmentDialog.close();
-          calendar.refetchEvents();
-          showMessage("Cita reprogramada correctamente");
-
-      } catch (error) {
-          showMessage(error.message);
+    try {
+      const result = await adminRequest(
+        `/api/admin/citas/${selectedAppointmentId}`,
+        "PATCH",
+        {
+          estado: "confirmada",
+          day,
+          time
         }
-    });
+      );
+
+      console.log("Reprogramación correcta:", result);
+
+      appointmentDialog.close();
+
+      calendar.gotoDate(day);
+      calendar.refetchEvents();
+
+      showMessage("Cita reprogramada correctamente");
+
+    } catch (error) {
+      console.error("Error reprogramando cita:", error);
+      showMessage(error.message);
+
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+    }
+  });
+
 
 document.getElementById("new-block")
   .addEventListener("click", () => {
