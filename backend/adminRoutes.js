@@ -1,8 +1,13 @@
 
 const express = require("express");
-
 const pool = require("./database");
 const requireAdmin = require("./adminAuth");
+
+const {
+    cancelAppointment,
+    rescheduleAppointment,
+    blockSchedule
+  } = require("./adminOperations");
 
 const router = express.Router();
 
@@ -15,12 +20,6 @@ router.get("/citas", async (req, res) => {
 
   const startDate = new Date(start);
   const endDate = new Date(end);
-
-  const {
-      cancelAppointment,
-      rescheduleAppointment,
-      blockSchedule
-    } = require("./adminOperations");
 
   if (
     typeof start !== "string" ||
@@ -59,15 +58,15 @@ router.get("/citas", async (req, res) => {
     );
 
     const events = result.rows.map(cita => ({
-        id: String(cita.id),
-        title: `${cita.nombre_cliente} - ${cita.servicio_id}`,
-        start: cita.inicio_local,
-        end: cita.fin_local,
-        extendedProps: {
-          nombre: cita.nombre_cliente,
-          telefono: cita.telefono,
-          servicio: cita.servicio_id
-        }
+      id: String(cita.id),
+      title: `${cita.nombre_cliente} - ${cita.servicio_id}`,
+      start: cita.inicio_local,
+      end: cita.fin_local,
+      extendedProps: {
+        nombre: cita.nombre_cliente,
+        telefono: cita.telefono,
+        servicio: cita.servicio_id
+      }
     }));
 
     res.json(events);
