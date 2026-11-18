@@ -1,3 +1,4 @@
+const { title } = require("node:process");
 
 const SUPABASE_URL =
   "https://wqwdcbsfvhohqjpbdcoa.supabase.co";
@@ -66,6 +67,7 @@ function showAdmin(user) {
 }
 
 async function fetchAdminCitas(info) {
+  
   const { data, error } =
     await client.auth.getSession();
 
@@ -104,6 +106,19 @@ async function fetchAdminCitas(info) {
   return response.json();
 }
 
+// Consultar horarios bloqueados desde Render
+async function fetchAdminBloqueos(info) {
+  const params = new URLSearchParams({
+    start: info.startStr,
+    end: info.endStr
+  });
+
+  return await adminRequest(
+    `/api/admin/bloqueos?${params}`,
+    "GET"
+  );
+}
+
 function createCalendar() {
   calendar = new FullCalendar.Calendar(
     document.getElementById("calendar"),
@@ -139,38 +154,105 @@ function createCalendar() {
       events: async (info, success, failure) => {
         try {
           showMessage("");
-
-          const citas = await fetchAdminCitas(info);
-
-          const events = citas.map(cita => ({
+          
+          // consulta citas, bloqueos en paralelo
+          const [citas, bloqueos] = await Promise.all([
+            fetchAdminCitas(info),
+            fetchAdminBloqueos(info)
+          ]);
+          //convertir las citas en eventos
+          const eventosCitas = citas.map(cita => ({
             id: String(cita.id),
             title: cita.title,
             start: cita.start,
             end: cita.end,
-            extendedProps: cita.extendedProps || {}
+            backgroundColor: "#447FA9",
+            borderColor: "#447FA9",
+            textColor: "#FFFFFF",
+
+            extendedProps: {
+              ...cita.extendedProps,
+              tipo: "cita"
+            }
           }));
 
-          success(events);
+          // los bloqueos ya llegan preparados desde el backend
+          const eventosBloqueos = bloqueos;
+          // Mostrar ambos tipos en FullCalendar
+          success([
+            ...eventosCitas,
+            ...eventosBloqueos
+          ]);
+
+          
         } catch (error) {
+          console.error(
+            "Error al cargar calendario:", error
+          );
           showMessage(error.message);
           failure(error);
         }
       },
 
       eventClick(info) {
-        /*const cita = info.event;
-
-        alert(
-          `Cita: ${cita.title}\n` +
-          `Inicio: ${cita.start?.toLocaleString("es-MX")}`
-        );*/
-        showAppointmentDetails(info.event);
+        const evento = info.event;
+        if (evento.extendedProps.tipo === "bloqueo"){
+          showBlockDetails(evento);
+          return;
+        }
+        showAppointmentDetails(evento);
       }
     }
   );
 
   calendar.render();
 }
+
+
+async function showBlockDetails(evento) {
+  const motivo =
+    evento.extendedProps.motivo ||
+    "Sin motivo registrado";
+
+  const inicio = evento.startStr;
+  const fin = evento.endStr;
+
+  const descripcion = evento.allDay
+    ? `Bloqueo de día completo\nDesde: ${inicio}\nHasta: ${fin} (exclusivo)`
+    : `Desde: ${inicio}\nHasta: ${fin}`;
+
+  const confirmed = confirm(
+    "HORARIO BLOQUEADO\n\n" +
+    `Motivo: ${motivo}\n` +
+    `${descripcion}\n\n` +
+    "¿Deseas eliminar este bloqueo y " +
+    "liberar nuevamente el horario?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await adminRequest(
+      `/api/admin/bloqueos/${evento.id}`,
+      "DELETE"
+    );
+
+    calendar.refetchEvents();
+
+    showMessage(
+      "Bloqueo eliminado correctamente"
+    );
+
+  } catch (error) {
+    console.error(
+      "Error eliminando bloqueo:",
+      error
+    );
+
+    showMessage(error.message);
+  }
+}
+
 
 loginForm.addEventListener("submit", async event => {
   event.preventDefault();
@@ -274,7 +356,7 @@ async function adminRequest(path, method, body) {
   if (
     typeof path !== "string" ||
     !path.startsWith("/api/admin/") ||
-    !["PATCH", "POST"].includes(method)
+    !["GET", "POST", "PATCH", "DELETE"].includes(method)
   ) {
     throw new Error(
       "Ruta o método administrativo inválido"

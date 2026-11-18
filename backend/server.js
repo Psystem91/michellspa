@@ -21,7 +21,7 @@ const PORT = Number(process.env.PORT) || 4000;
 app.use(cors({
   origin: process.env.FRONTEND_ORIGIN ||
     "https://psystem91.github.io",
-  methods: ["GET", "POST", "PATCH", "OPTIONS"],
+  methods: ["GET", "POST", "PATCH", "OPTIONS", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 

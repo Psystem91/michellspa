@@ -199,4 +199,142 @@ router.post("/bloqueos", async (req, res) => {
   }
 });
 
+
+/*
+ * GET /api/admin/bloqueos
+ * Consultar bloqueos para FullCalendar
+ */
+router.get("/bloqueos", async (req, res) => {
+  const { start, end } = req.query;
+
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+
+  if (
+    typeof start !== "string" ||
+    typeof end !== "string" ||
+    !Number.isFinite(startDate.getTime()) ||
+    !Number.isFinite(endDate.getTime()) ||
+    startDate >= endDate ||
+    endDate.getTime() - startDate.getTime() >
+      93 * 24 * 60 * 60 * 1000
+  ) {
+    return res.status(400).json({
+      error: "Rango de fechas inválido"
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT
+         id,
+         motivo,
+         to_char(
+           inicio AT TIME ZONE 'America/Mexico_City',
+           'YYYY-MM-DD"T"HH24:MI:SS'
+         ) AS inicio_local,
+         to_char(
+           fin AT TIME ZONE 'America/Mexico_City',
+           'YYYY-MM-DD"T"HH24:MI:SS'
+         ) AS fin_local
+       FROM public.bloqueos
+       WHERE inicio < $2
+         AND fin > $1
+       ORDER BY inicio`,
+      [startDate, endDate]
+    );
+
+    const bloqueos = result.rows.map(b => {
+      const inicio = b.inicio_local;
+      const fin = b.fin_local;
+
+      const inicioDia = inicio.slice(11) === "00:00:00";
+      const finDia = fin.slice(11) === "00:00:00";
+
+      const unDiaCompleto =
+        inicioDia && finDia &&
+        (Date.parse(fin + "Z") -
+         Date.parse(inicio + "Z") === 86400000);
+
+      return {
+        id: String(b.id),
+        title: `Bloqueado: ${b.motivo}`,
+        start: inicio,
+        end: fin,
+        allDay: unDiaCompleto,
+        backgroundColor: "#AD4F62",
+        borderColor: "#AD4F62",
+        textColor: "#FFFFFF",
+        extendedProps: {
+          tipo: "bloqueo",
+          motivo: b.motivo
+        }
+      };
+    });
+
+    res.json(bloqueos);
+
+  } catch (error) {
+    console.error(
+      "Error consultando bloqueos:",
+      error.message
+    );
+
+    res.status(500).json({
+      error: "No se pudieron consultar los bloqueos"
+    });
+  }
+});
+
+
+/*
+ * DELETE /api/admin/bloqueos/:id
+ * Eliminar un bloqueo
+ */
+router.delete("/bloqueos/:id", async (req, res) => {
+  const { id } = req.params;
+
+  // Permitir identificadores UUID o numéricos.
+  const uuid =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  if (!uuid.test(id) && !/^\d+$/.test(id)) {
+    return res.status(400).json({
+      error: "Identificador de bloqueo inválido"
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      `DELETE FROM public.bloqueos
+       WHERE id = $1
+       RETURNING id`,
+      [id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        error: "El bloqueo no existe"
+      });
+    }
+
+    return res.json({
+      success: true,
+      id: String(result.rows[0].id),
+      message: "Bloqueo eliminado correctamente"
+    });
+
+  } catch (error) {
+    console.error(
+      "Error eliminando bloqueo:",
+      error.message
+    );
+
+    return res.status(500).json({
+      error: "No se pudo eliminar el bloqueo"
+    });
+  }
+});
+
+
 module.exports = router;
