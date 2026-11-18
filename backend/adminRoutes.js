@@ -87,11 +87,15 @@ router.patch("/citas/:id", async (req, res) => {
   const { id } = req.params;
   const { estado, day, time } = req.body || {};
   
-  console.log("PATCH administrativo:", {
+  console.log("Datos recibidos en PATCH:", {
     estado,
     day,
     time,
-    bodyKeys: Object.keys(req.body || {})
+    tipos:{
+      estado: typeof estado,
+      day: typeof day,
+      time: typeof time
+    }
   });
 
   if (!/^[0-9a-f-]{36}$/i.test(id)) {

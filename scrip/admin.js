@@ -420,8 +420,8 @@ document.getElementById("reschedule-form")
         "PATCH",
         {
           estado: "confirmada",
-          day,
-          time
+          day: day,
+          time: time
         }
       );
 

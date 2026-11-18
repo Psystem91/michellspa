@@ -32,9 +32,9 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
 const adminRoutes = require("./adminRoutes");
-app.use("/api/admin", adminRoutes);
 
 app.use(express.json({ limit: "10kb" }));
+app.use("/api/admin", adminRoutes);
 
 // Limitar consultas automatizadas
 const queryLimiter = rateLimit({
