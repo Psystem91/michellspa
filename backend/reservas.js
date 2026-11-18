@@ -265,7 +265,7 @@ async function bookAppointment({
 
 module.exports = {
   getAvailability,
-  bookAppointment
+  bookAppointment,
   validateStart,
   readOccupancy,
   capacityAvailable,
