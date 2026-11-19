@@ -352,11 +352,16 @@ const manualSave =
 // Abrir formulario
 document.getElementById("new-appointment")
   .addEventListener("click", () => {
-    manualForm.reset();
+    // Limpiar los campos individualmente
+    document.getElementById("manual-name").value = "";
+    document.getElementById("manual-phone").value = "";
+    document.getElementById("manual-day").value = "";
+
+    manualService.value = "hollywood";
 
     manualTime.innerHTML =
       '<option value="">Selecciona una fecha</option>';
-
+    manualTime.disabled = true;
     manualStatus.textContent = "";
     manualDialog.showModal();
   });
