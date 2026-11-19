@@ -1,7 +1,10 @@
-
 const express = require("express");
 const pool = require("./database");
 const requireAdmin = require("./adminAuth");
+const {
+  getAvailability,
+  bookAppointment
+} = require("./reservas");
 
 const {
     cancelAppointment,
@@ -332,6 +335,82 @@ router.delete("/bloqueos/:id", async (req, res) => {
 
     return res.status(500).json({
       error: "No se pudo eliminar el bloqueo"
+    });
+  }
+});
+
+
+/*
+ * POST /api/admin/citas
+ * Registrar una cita manual
+ */
+router.post("/citas", async (req, res) => {
+  const {
+    name,
+    phone,
+    service,
+    day,
+    time
+  } = req.body || {};
+
+  if (
+    typeof name !== "string" ||
+    name.trim().length < 2 ||
+    name.length > 80 ||
+    typeof phone !== "string" ||
+    !/^[+\d\s()-]{7,22}$/.test(phone) ||
+    typeof service !== "string" ||
+    typeof day !== "string" ||
+    typeof time !== "string"
+  ) {
+    return res.status(400).json({
+      error: "Revisa los datos de la cita"
+    });
+  }
+
+  try {
+    // Utiliza la transacción que ya funciona.
+    const booking = await bookAppointment({
+      name: name.trim(),
+      phone: phone.trim(),
+      service,
+      day,
+      time
+    });
+
+    return res.status(201).json({
+      success: true,
+      bookingId: booking.id,
+      day: booking.day,
+      time: booking.time
+    });
+
+  } catch (error) {
+    if (
+      ["INVALID_SERVICE", "INVALID_TIME"]
+        .includes(error.message)
+    ) {
+      return res.status(400).json({
+        error: "Servicio, fecha u horario inválido"
+      });
+    }
+
+    if (
+      ["FULL", "BLOCKED"]
+        .includes(error.message)
+    ) {
+      return res.status(409).json({
+        error: "El horario ya no está disponible"
+      });
+    }
+
+    console.error(
+      "Error al agendar manualmente:",
+      error.message
+    );
+
+    return res.status(500).json({
+      error: "No se pudo registrar la cita"
     });
   }
 });

@@ -29,6 +29,9 @@
             <h2>Calendario de citas</h2>
             <p id="admin-email"></p>
             <div class="admin-actions">
+                <button type="button" id="new-appointment">
+                    ➕ Agendar cita
+                </button>
                 <button type="button" id="new-block">
                    🔒 Bloquear horario o día 
                 </button>
@@ -112,6 +115,46 @@
 
                         <button type="button" id="close-block">
                         Cerrar
+                        </button>
+                    </form>
+                </dialog>
+                <dialog id="manual-appointment-form">
+                    <h2>Agenda cita manual</h2>
+                    <form id="manual-appointment-form">
+                        <label for="manual-name">
+                            Nombre del Cliente
+                        </label>
+                        <input type="text" id="manual-name" maxlength="80" required>
+                        <label for="manual-phone">
+                            Telefono
+                        </label>
+                        <input type="tel" id="manual-phone" maxlength="22" required>
+                        <label for="manual-service">
+                            Servicio
+                        </label>
+                        <select id="manual-service" required>
+                            <option value="hollywood">
+                                Hollywood Peel Láser - 80 minutos
+                            </option>
+                        </select>
+                        <label for="manual-day">
+                            Fecha de la Cita
+                        </label>
+                        <input type="date" id="manual-day" required>
+                        <label for="manual-time">
+                            Horario Disponible
+                        </label>
+                        <select id="manual-time" required>
+                            <option value="">
+                                Selecciona la Fecha
+                            </option>
+                        </select>
+                        <p id="manual-status" role="status"></p>
+                        <button type="submit" id="manual-save">
+                            Guardar Cita
+                        </button>
+                        <button type="button" id="manual-close">
+                            Cerrar
                         </button>
                     </form>
                 </dialog>

@@ -323,6 +323,197 @@ logoutButton.addEventListener("click", async () => {
   showMessage("Sesión cerrada");
 });
 
+
+// ==================================
+// AGENDAR CITA MANUAL
+// ==================================
+
+const manualDialog =
+  document.getElementById("manual-appointment-dialog");
+
+const manualForm =
+  document.getElementById("manual-appointment-form");
+
+const manualDay =
+  document.getElementById("manual-day");
+
+const manualTime =
+  document.getElementById("manual-time");
+
+const manualService =
+  document.getElementById("manual-service");
+
+const manualStatus =
+  document.getElementById("manual-status");
+
+const manualSave =
+  document.getElementById("manual-save");
+
+// Abrir formulario
+document.getElementById("new-appointment")
+  .addEventListener("click", () => {
+    manualForm.reset();
+
+    manualTime.innerHTML =
+      '<option value="">Selecciona una fecha</option>';
+
+    manualStatus.textContent = "";
+    manualDialog.showModal();
+  });
+
+// Cerrar formulario
+document.getElementById("manual-close")
+  .addEventListener("click", () => {
+    manualDialog.close();
+  });
+
+// Consultar horarios disponibles
+async function loadManualSlots() {
+  const day = manualDay.value;
+  const service = manualService.value;
+
+  manualTime.innerHTML =
+    '<option value="">Consultando horarios...</option>';
+
+  manualTime.disabled = true;
+  manualStatus.textContent = "";
+
+  if (!day || !service) {
+    manualTime.innerHTML =
+      '<option value="">Selecciona una fecha</option>';
+    return;
+  }
+
+  const requestedDay = day;
+  const requestedService = service;
+
+  try {
+    const params = new URLSearchParams({
+      day,
+      service
+    });
+
+    const response = await fetch(
+      `${API_URL}/api/availability?${params}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Error consultando horarios"
+      );
+    }
+
+    // Evitar resultados de una consulta anterior.
+    if (
+      manualDay.value !== requestedDay ||
+      manualService.value !== requestedService
+    ) return;
+
+    manualTime.innerHTML =
+      '<option value="">Selecciona un horario</option>';
+
+    if (!Array.isArray(data.slots)) {
+      throw new Error("Respuesta de horarios inválida");
+    }
+
+    for (const slot of data.slots) {
+      const option = document.createElement("option");
+      option.value = slot;
+      option.textContent = slot;
+      manualTime.appendChild(option);
+    }
+
+    if (data.slots.length === 0) {
+      manualStatus.textContent =
+        "No hay horarios disponibles para esta fecha.";
+    }
+
+    manualTime.disabled = data.slots.length === 0;
+
+  } catch (error) {
+    if (
+      manualDay.value !== requestedDay ||
+      manualService.value !== requestedService
+    ) return;
+
+    manualStatus.textContent = error.message;
+
+    manualTime.innerHTML =
+      '<option value="">Sin horarios disponibles</option>';
+  }
+}
+
+// Actualizar horarios al cambiar fecha o servicio
+manualDay.addEventListener("change", loadManualSlots);
+manualService.addEventListener("change", loadManualSlots);
+
+// Guardar reservación
+manualForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const payload = {
+    name: document.getElementById("manual-name")
+      .value.trim(),
+
+    phone: document.getElementById("manual-phone")
+      .value.trim(),
+
+    service: manualService.value,
+    day: manualDay.value,
+    time: manualTime.value
+  };
+
+  if (
+    !payload.name ||
+    !payload.phone ||
+    !payload.day ||
+    !payload.time
+  ) {
+    manualStatus.textContent =
+      "Completa todos los datos de la cita.";
+    return;
+  }
+
+  if (!confirm(
+    `¿Registrar la cita de ${payload.name} ` +
+    `el ${payload.day} a las ${payload.time}?`
+  )) return;
+
+  manualSave.disabled = true;
+  manualStatus.textContent = "Guardando cita...";
+
+  try {
+    const result = await adminRequest(
+      "/api/admin/citas",
+      "POST",
+      payload
+    );
+
+    manualDialog.close();
+
+    calendar.gotoDate(payload.day);
+    calendar.refetchEvents();
+
+    showMessage(
+      `Cita registrada correctamente. ` +
+      `Folio: ${result.bookingId}`
+    );
+
+  } catch (error) {
+    manualStatus.textContent = error.message;
+
+    // Volver a consultar horarios, porque
+    // otra persona pudo ocupar el espacio.
+    await loadManualSlots();
+
+  } finally {
+    manualSave.disabled = false;
+  }
+});
+
+
 async function initialize() {
   showLogin();
 
