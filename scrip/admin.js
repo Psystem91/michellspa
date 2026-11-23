@@ -355,6 +355,7 @@ document.getElementById("new-appointment")
     // Limpiar los campos individualmente
     document.getElementById("manual-name").value = "";
     document.getElementById("manual-phone").value = "";
+    //document.getElementById("manual-transfer").value = "";
     document.getElementById("manual-day").value = "";
 
     manualService.value = "hollywood";

@@ -357,6 +357,8 @@ router.post("/citas", async (req, res) => {
     typeof name !== "string" ||
     name.trim().length < 2 ||
     name.length > 80 ||
+    typeof transfer !== "string" ||
+    !/^[+\d\s()-]{7,22}$/.test(phone) ||
     typeof phone !== "string" ||
     !/^[+\d\s()-]{7,22}$/.test(phone) ||
     typeof service !== "string" ||
