@@ -780,7 +780,13 @@ document.getElementById("block-form")
         document.getElementById("block-end").value,
 
       motivo:
-        document.getElementById("block-reason").value
+        document.getElementById("block-reason").value,
+
+      nombre_cliente:
+        document.getElementById("block-client-name").value.trim(),
+
+      cupos_bloqueados:
+        Number(document.getElementById("block-capacity").value)
     };
 
     if (!confirm(

@@ -115,7 +115,21 @@
                             maxlength="200"
                             placeholder="Ej. Descanso o mantenimiento"
                             required>
-
+                        <label for="block-client-name">
+                            Nombre de Cliente
+                        </label>
+                        <input type="text" id="block-client-name" maxlength="80" placeholder="Nombre completo del cliente">
+                        <label for="block-capacity">
+                            Espacios que deseas apartar
+                        </label>
+                        <select id="block-capacity" required>
+                            <option value="1">
+                                1 Espacio - Dejar 1 Disponible
+                            </option>
+                            <option value="2">
+                                2 Espacios - Bloquear ambos
+                            </option>
+                        </select>
                         <button type="submit">Guardar bloqueo</button>
 
                         <button type="button" id="close-block">
