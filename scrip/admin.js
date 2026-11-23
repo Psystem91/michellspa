@@ -349,13 +349,16 @@ const manualStatus =
 const manualSave =
   document.getElementById("manual-save");
 
+const manualTransfer =
+  document.getElementById("manual-transfer");
+
 // Abrir formulario
 document.getElementById("new-appointment")
   .addEventListener("click", () => {
     // Limpiar los campos individualmente
     document.getElementById("manual-name").value = "";
     document.getElementById("manual-phone").value = "";
-    //document.getElementById("manual-transfer").value = "";
+    document.getElementById("manual-transfer").value = "";
     document.getElementById("manual-day").value = "";
 
     manualService.value = "hollywood";
@@ -617,6 +620,9 @@ function showAppointmentDetails(event) {
   document.getElementById("detail-name")
     .textContent = details.nombre || "";
 
+  document.getElementById("detail-transfer")
+    .textContent = details.transferencia || "";
+  
   document.getElementById("detail-phone")
     .textContent = details.telefono || "";
 
