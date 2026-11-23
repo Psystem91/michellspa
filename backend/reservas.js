@@ -191,8 +191,15 @@ async function getAvailability(day, serviceId) {
 }
 
 async function bookAppointment({
-  name, phone, service, day, time
+  name, phone, service, day, time, numero_transaccion = null, origen = "web"
 }) {
+  if (numero_transaccion !== null &&(
+    typeof numero_transaccion !== "string" ||
+    numero_transaccion.trim().length > 80 ||
+    numero_transaccion.trim().length === 0
+  )){
+    throw new Error("INVALID_TRANSACTION");
+  }
   const client = await pool.connect();
 
   try {
@@ -234,16 +241,18 @@ async function bookAppointment({
     const result = await client.query(
       `INSERT INTO public.citas
        (nombre_cliente, telefono, servicio_id,
-        inicio, fin, estado, origen)
+        inicio, fin, estado, origen, numero_transaccion)
        VALUES ($1, $2, $3, $4, $5,
-               'confirmada', 'web')
+               'confirmada', $6, $7)
        RETURNING id`,
       [
         name,
         phone,
         service,
         interval.start.toJSDate(),
-        interval.end.toJSDate()
+        interval.end.toJSDate(),
+        origen,
+        numero_transaccion
       ]
     );
 

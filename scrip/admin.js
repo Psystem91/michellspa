@@ -466,6 +466,9 @@ manualForm.addEventListener("submit", async event => {
     name: document.getElementById("manual-name")
       .value.trim(),
 
+    numero_transaccion: document.getElementById("manual-transfer")
+      .value.trim(),
+      
     phone: document.getElementById("manual-phone")
       .value.trim(),
 
@@ -476,6 +479,7 @@ manualForm.addEventListener("submit", async event => {
 
   if (
     !payload.name ||
+    !payload.numero_transaccion ||
     !payload.phone ||
     !payload.day ||
     !payload.time
@@ -621,7 +625,7 @@ function showAppointmentDetails(event) {
     .textContent = details.nombre || "";
 
   document.getElementById("detail-transfer")
-    .textContent = details.transferencia || "";
+    .textContent = details.numero_transaccion || "No Registrado";
   
   document.getElementById("detail-phone")
     .textContent = details.telefono || "";

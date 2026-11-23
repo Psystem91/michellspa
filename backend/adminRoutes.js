@@ -11,6 +11,7 @@ const {
     rescheduleAppointment,
     blockSchedule
   } = require("./adminOperations");
+const { message } = require("statuses");
 
 const router = express.Router();
 
@@ -43,6 +44,8 @@ router.get("/citas", async (req, res) => {
       `SELECT
       id,
       nombre_cliente,
+      telefono,
+      numero_transaccion,
       servicio_id,
       to_char(
         inicio AT TIME ZONE 'America/Mexico_City',
@@ -68,6 +71,7 @@ router.get("/citas", async (req, res) => {
       extendedProps: {
         nombre: cita.nombre_cliente,
         telefono: cita.telefono,
+        numero_transaccion: cita.numero_transaccion,
         servicio: cita.servicio_id
       }
     }));
@@ -347,6 +351,7 @@ router.delete("/bloqueos/:id", async (req, res) => {
 router.post("/citas", async (req, res) => {
   const {
     name,
+    numero_transaccion,
     phone,
     service,
     day,
@@ -357,8 +362,9 @@ router.post("/citas", async (req, res) => {
     typeof name !== "string" ||
     name.trim().length < 2 ||
     name.length > 80 ||
-    typeof transfer !== "string" ||
-    !/^[+\d\s()-]{7,22}$/.test(phone) ||
+    typeof numero_transaccion !== "string" ||
+    !numero_transaccion.trim() ||
+    numero_transaccion.length > 80 ||
     typeof phone !== "string" ||
     !/^[+\d\s()-]{7,22}$/.test(phone) ||
     typeof service !== "string" ||
@@ -374,36 +380,34 @@ router.post("/citas", async (req, res) => {
     // Utiliza la transacción que ya funciona.
     const booking = await bookAppointment({
       name: name.trim(),
+      numero_transaccion: numero_transaccion.trim(),
       phone: phone.trim(),
       service,
       day,
-      time
+      time,
+      origen: "admin"
     });
 
     return res.status(201).json({
       success: true,
       bookingId: booking.id,
       day: booking.day,
-      time: booking.time
+      time: booking.time,
+      numero_transaccion: numero_transaccion.trim() 
     });
 
   } catch (error) {
-    if (
-      ["INVALID_SERVICE", "INVALID_TIME"]
-        .includes(error.message)
-    ) {
-      return res.status(400).json({
-        error: "Servicio, fecha u horario inválido"
-      });
-    }
+    const message = {
+      INVALID_SERVICE: [400, "Servicio no disponible"],
+      INVALID_TIME: [400, "Fecha u Horario invalido"],
+      FULL: [409, "No hay capacidad en ese horario"],
+      BLOCKED: [409, "El horario esta bloqueado"],
+      INVALID_TRANSACTION: [400, "Numero de transaccion invalido"]
+    };
 
-    if (
-      ["FULL", "BLOCKED"]
-        .includes(error.message)
-    ) {
-      return res.status(409).json({
-        error: "El horario ya no está disponible"
-      });
+    if(message[error.message]){
+      const [status, message] = message[error.message];
+      return res.status(status).json({error: message});
     }
 
     console.error(
