@@ -12,6 +12,7 @@ const {
     blockSchedule
   } = require("./adminOperations");
 const { message } = require("statuses");
+const { error } = require("node:console");
 
 const router = express.Router();
 
@@ -144,7 +145,9 @@ router.patch("/citas/:id", async (req, res) => {
       INVALID_SERVICE: [400, "Servicio no disponible"],
       FULL: [409, "No hay capacidad en ese horario"],
       BLOCKED: [409, "El horario está bloqueado"],
-      CONFLICT: [409, "La cita cambió. Actualiza el calendario"]
+      CONFLICT: [409, "La cita cambió. Actualiza el calendario"],
+      INVALID_CLIENT: [400, "Nombre del cliente invalido"],
+      INVALID_CAPACITY: [400, "Selecciona 1 o 2 espacios"]
     };
 
     if (messages[error.message]) {
@@ -165,8 +168,20 @@ router.post("/bloqueos", async (req, res) => {
     startTime,
     endTime,
     allDay,
-    motivo
+    motivo,
+    nombre_cliente,
+    cupos_bloqueados
   } = req.body || {};
+  if (
+    !Number.isInteger(cupos_bloqueados) ||
+    ![1,2].includes(cupos_bloqueados) ||
+    typeof nombre_cliente !== "string" ||
+    nombre_cliente.length > 80
+  ){
+    return res.status(400).json({
+      error: "Revisa el nombre y los campos del bloqueo"
+    });
+  }
 
   try {
     const block = await blockSchedule({
@@ -174,7 +189,9 @@ router.post("/bloqueos", async (req, res) => {
       startTime,
       endTime,
       allDay: allDay === true,
-      motivo
+      motivo,
+      nombre_cliente: nombre_cliente.trim() || null,
+      cupos_bloqueados
     });
 
     return res.status(201).json({
