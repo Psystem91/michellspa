@@ -411,6 +411,13 @@ body {
         object-fit: contain;
     }
 
+    .loginStyle img {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        object-fit: contain;
+    }
+
     .imgenFond{
         width: 100%;
         max-width: 290px;
@@ -449,38 +456,31 @@ body {
 }
 
 .loginStyle{
-    position: fixed;
-    bottom: 25px;
-    right: 31rem;
-    top: 63%;
-    transform: translateY(-50%);
-    width: 55px;
-    height: 55px;
-    /*border-radius: 50%;*/
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 0;
-    /*background-color: #25d366;*/
-    /*color: white;*/
+    position: static;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    gap: 8px;
+    order: -1;
     cursor: pointer;
-    z-index: 1000;
-    /*font-size: 32px;*/    
+    z-index: 1000; 
 }
 
 .loginStyle img {
-    width: 100%;
-    height: 100%;
+    width: 55px;
+    height: 55px;
+    padding: 0;
     object-fit: contain;
-    display: block;
 }
 .loginStyle:hover{
     background: transparent;
     transform: scale(1.30);
     transition: transform 0.3s ease;
     /*background-color: #1ebe5d;
-    transform: scale(1.05);*/
+    transform: scale(1.05);
 }
