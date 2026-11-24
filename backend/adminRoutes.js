@@ -11,8 +11,7 @@ const {
     rescheduleAppointment,
     blockSchedule
   } = require("./adminOperations");
-const { message } = require("statuses");
-const { error } = require("node:console");
+
 
 const router = express.Router();
 
@@ -143,12 +142,8 @@ router.patch("/citas/:id", async (req, res) => {
       NOT_FOUND: [404, "La cita no existe o está cancelada"],
       INVALID_TIME: [400, "Fecha u horario inválido"],
       INVALID_SERVICE: [400, "Servicio no disponible"],
-      FULL: [409, "No hay capacidad en ese horario"],
       BLOCKED: [409, "El horario está bloqueado"],
       CONFLICT: [409, "La cita cambió. Actualiza el calendario"],
-      INVALID_CLIENT: [400, "Nombre del cliente invalido"],
-      INVALID_CAPACITY: [400, "Cantidad de cupos invalida"],
-      FULL: [409, "No hay suficientes espacios disponibles"]
     };
 
     if (messages[error.message]) {
@@ -204,11 +199,11 @@ router.post("/bloqueos", async (req, res) => {
     const messages = {
       INVALID_TIME: [400, "Fecha u horario inválido"],
       INVALID_REASON: [400, "Debes indicar un motivo válido"],
-      HAS_APPOINTMENTS: [
-        409,
-        "Existen citas confirmadas en ese periodo"
-      ],
-      BLOCKED: [409, "El periodo ya está bloqueado"]
+      HAS_APPOINTMENTS: [409,"Existen citas confirmadas en ese periodo"],
+      BLOCKED: [409, "El periodo ya está bloqueado"],
+      FULL: [409, "No hay suficientes espacio disponible"],
+      INVALID_CLIENT: [400, "Nombre del cliente invalido"],
+      INVALID_CAPACITY: [400, "Cantidad de cupos invalida"]
     };
 
     if (messages[error.message]) {
@@ -382,21 +377,56 @@ router.post("/citas", async (req, res) => {
     time
   } = req.body || {};
 
+  const camposInvalidos = [];
+
   if (
     typeof name !== "string" ||
     name.trim().length < 2 ||
-    name.length > 80 ||
+    name.length > 80
+  ) {
+    camposInvalidos.push("name");
+  }
+
+  if (
     typeof numero_transaccion !== "string" ||
     !numero_transaccion.trim() ||
-    numero_transaccion.length > 80 ||
-    typeof phone !== "string" ||
-    !/^[+\d\s()-]{7,22}$/.test(phone) ||
-    typeof service !== "string" ||
-    typeof day !== "string" ||
-    typeof time !== "string"
+    numero_transaccion.length > 80
   ) {
+    camposInvalidos.push("numero_transaccion");
+  }
+
+  if (
+    typeof phone !== "string" ||
+    !/^[+\d\s()-]{7,22}$/.test(phone)
+  ) {
+    camposInvalidos.push("phone");
+  }
+
+  if (
+    typeof service !== "string" ||
+    !service.trim()
+  ) {
+    camposInvalidos.push("service");
+  }
+
+  if (
+    typeof day !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(day)
+  ) {
+    camposInvalidos.push("day");
+  }
+
+  if (
+    typeof time !== "string" ||
+    !/^\d{2}:\d{2}$/.test(time)
+  ) {
+    camposInvalidos.push("time");
+  }
+
+  if (camposInvalidos.length > 0) {
     return res.status(400).json({
-      error: "Revisa los datos de la cita"
+      error: "Revisa los datos de la cita",
+      camposInvalidos
     });
   }
 
