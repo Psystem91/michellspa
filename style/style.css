@@ -451,8 +451,8 @@ body {
 .loginStyle{
     position: fixed;
     bottom: 25px;
-    right: 85px;
-    top: 65%;
+    right: 31rem;
+    top: 75%;
     transform: translateY(-50%);
     width: 55px;
     height: 65px;
