@@ -748,6 +748,29 @@ document.getElementById("reschedule-form")
 
 document.getElementById("new-block")
   .addEventListener("click", () => {
+    // Limpiar fecha
+    document.getElementById("block-day").value = "";
+
+    // Desmarcar día completo
+    document.getElementById("block-all-day").checked = false;
+
+    // Restablecer horario
+    document.getElementById("block-start").value = "11:00";
+    document.getElementById("block-end").value = "14:00";
+
+    // Limpiar motivo
+    document.getElementById("block-reason").value = "";
+
+    // Limpiar nombre del cliente
+    document.getElementById("block-client-name").value = "";
+
+    // Restablecer a un espacio bloqueado
+    document.getElementById("block-capacity").value = "1";
+
+    // Mostrar los campos de horario
+    document.getElementById("block-hours").hidden = false;
+
+    // Abrir formulario limpio
     blockDialog.showModal();
   });
 
@@ -801,6 +824,15 @@ document.getElementById("block-form")
       );
 
       blockDialog.close();
+      // Limpiar campos después de guardar
+      document.getElementById("block-day").value = "";
+      document.getElementById("block-all-day").checked = false;
+      document.getElementById("block-start").value = "11:00";
+      document.getElementById("block-end").value = "14:00";
+      document.getElementById("block-reason").value = "";
+      document.getElementById("block-client-name").value = "";
+      document.getElementById("block-capacity").value = "1";
+      document.getElementById("block-hours").hidden = false;
       calendar.gotoDate(payload.day);
       calendar.refetchEvents();
       showMessage("Horario bloqueado correctamente");
