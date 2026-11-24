@@ -147,7 +147,8 @@ router.patch("/citas/:id", async (req, res) => {
       BLOCKED: [409, "El horario está bloqueado"],
       CONFLICT: [409, "La cita cambió. Actualiza el calendario"],
       INVALID_CLIENT: [400, "Nombre del cliente invalido"],
-      INVALID_CAPACITY: [400, "Selecciona 1 o 2 espacios"]
+      INVALID_CAPACITY: [400, "Cantidad de cupos invalida"],
+      FULL: [409, "No hay suficientes espacios disponibles"]
     };
 
     if (messages[error.message]) {
@@ -253,6 +254,8 @@ router.get("/bloqueos", async (req, res) => {
       `SELECT
          id,
          motivo,
+         nombre_cliente,
+         cupos_bloqueados,
          to_char(
            inicio AT TIME ZONE 'America/Mexico_City',
            'YYYY-MM-DD"T"HH24:MI:SS'
@@ -282,7 +285,9 @@ router.get("/bloqueos", async (req, res) => {
 
       return {
         id: String(b.id),
-        title: `Bloqueado: ${b.motivo}`,
+        title: b.nombre_cliente
+          ? `Apartado: ${b.nombre_cliente} (${b.cupos_bloqueados}/2)`
+          : `Bloqueado: ${b.motivo} (${b.cupos_bloqueados}/2)` ,
         start: inicio,
         end: fin,
         allDay: unDiaCompleto,
@@ -291,7 +296,9 @@ router.get("/bloqueos", async (req, res) => {
         textColor: "#FFFFFF",
         extendedProps: {
           tipo: "bloqueo",
-          motivo: b.motivo
+          motivo: b.motivo,
+          nombre_cliente: b.nombre_cliente,
+          cupos_bloqueados: b.cupos_bloqueados
         }
       };
     });

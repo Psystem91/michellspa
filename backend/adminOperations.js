@@ -254,8 +254,7 @@ async function blockSchedule({
 
   if (
     !Number.isInteger(cupos_bloqueados) ||
-    cupos_bloqueados < 1 ||
-    cupos_bloqueados > 2
+    ![1,2].includes(cupos_bloqueados)
   ) {
     throw new Error("INVALID_CAPACITY");
   }

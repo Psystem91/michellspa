@@ -60,30 +60,75 @@ function validateStart(day, time, duration) {
 
 const ms = value => new Date(value).getTime();
 
-function capacityAvailable(start, end, appointments) {
+
+function capacityAvailable(
+  start,
+  end,
+  appointments,
+  blocks = [],
+  requestedSlots = 1,
+  bufferNewAppointment = true
+) {
   const from = start.toMillis();
-  const to = end.plus({ minutes: BUFFER_MIN }).toMillis();
+
+  const until = end.toMillis() +
+    (bufferNewAppointment ? BUFFER_MIN * 60000 : 0);
+
   const buffer = BUFFER_MIN * 60000;
 
-  // La ocupación cambia solamente cuando comienza
-  // o termina una reserva.
   const checkpoints = [from];
 
-  for (const appointment of appointments) {
-    const s = ms(appointment.inicio);
-    if (s > from && s < to) checkpoints.push(s);
+  // Los inicios de citas cambian la ocupación.
+  for (const cita of appointments) {
+    const t = ms(cita.inicio);
+
+    if (t > from && t < until) {
+      checkpoints.push(t);
+    }
+  }
+
+  // Los inicios de bloqueos también cambian
+  // la cantidad de espacios disponibles.
+  for (const bloqueo of blocks) {
+    const t = ms(bloqueo.inicio);
+
+    if (t > from && t < until) {
+      checkpoints.push(t);
+    }
   }
 
   return checkpoints.every(t => {
-    const occupied = appointments.filter(a => {
-      const s = ms(a.inicio);
-      const e = ms(a.fin) + buffer;
-      return s <= t && t < e;
+    const citasOcupadas = appointments.filter(cita => {
+      const inicio = ms(cita.inicio);
+      const fin = ms(cita.fin) + buffer;
+
+      return inicio <= t && t < fin;
     }).length;
 
-    return occupied < CAPACITY;
+    const cuposBloqueados = blocks.reduce(
+      (total, bloqueo) => {
+        const inicio = ms(bloqueo.inicio);
+        const fin = ms(bloqueo.fin);
+
+        if (inicio <= t && t < fin) {
+          return total + Number(
+            bloqueo.cupos_bloqueados
+          );
+        }
+
+        return total;
+      },
+      0
+    );
+
+    return (
+      citasOcupadas +
+      cuposBloqueados +
+      requestedSlots <= CAPACITY
+    );
   });
 }
+
 
 function intersectsBlock(start, end, blocks) {
   const a = start.toMillis();
@@ -122,7 +167,7 @@ async function readOccupancy(client, start, end) {
   );
 
   const blocks = await client.query(
-    `SELECT inicio, fin
+    `SELECT inicio, fin, cupos_bloqueados
      FROM public.bloqueos
      WHERE inicio < $2 AND fin > $1`,
     [lower, upper]
@@ -171,9 +216,9 @@ async function getAvailability(day, serviceId) {
 
         if (!interval) continue;
 
-        if (intersectsBlock(
+        /*if (intersectsBlock(
           interval.start, interval.end, occupancy.blocks
-        )) continue;
+        )) continue;*/
 
         if (!capacityAvailable(
           interval.start, interval.end,
@@ -226,14 +271,14 @@ async function bookAppointment({
         client, interval.start, interval.end
       );
 
-    if (intersectsBlock(
+    /*if (intersectsBlock(
       interval.start, interval.end, blocks
     )) {
       throw new Error("BLOCKED");
-    }
+    }*/
 
     if (!capacityAvailable(
-      interval.start, interval.end, appointments
+      interval.start, interval.end, appointments, blocks
     )) {
       throw new Error("FULL");
     }
